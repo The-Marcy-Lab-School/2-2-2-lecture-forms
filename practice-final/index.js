@@ -9,7 +9,10 @@ const handleSubmit = (e) => {
   const formData = new FormData(form);
   const formObj = Object.fromEntries(formData);
 
-  // handle checkboxes differently
+  // handle checkboxes differently:
+  // formObj.isVegetarian will show as "on" or just not be there
+  // if left un-checked so we need to overwrite it using
+  // the form.isVegetarian Element and the .checked property
   formObj.isVegetarian = form.isVegetarian.checked;
 
   // do something with the formObj data
