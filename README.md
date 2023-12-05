@@ -1,5 +1,21 @@
 # 2.2.2 Lecture - Forms
 
+**Table of Contents**
+
+- [What is a form?](#what-is-a-form)
+- [Form Overview](#form-overview)
+- [Inputs](#inputs)
+- [Labels](#labels)
+- [Submit button](#submit-button)
+- [Original Form Submissions](#original-form-submissions)
+- [The Modern Way](#the-modern-way)
+- [Accessing form inputs by name](#accessing-form-inputs-by-name)
+- [FormData API](#formdata-api)
+- [One annoying gotcha: checkboxes](#one-annoying-gotcha-checkboxes)
+- [Resetting](#resetting)
+- [Input types](#input-types)
+- [Tracking Input and Non Submission Events](#tracking-input-and-non-submission-events)
+
 **Q: What is a form and why is a form useful?**
 
 ## What is a form?
@@ -238,7 +254,6 @@ On the `index.html` go over the basic text inputs, but then also radio groups (w
   <option value="banana">Banana</option>
   <option value="orange">Orange</option>
 </select>
-
 ```
 
 
