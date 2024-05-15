@@ -3,16 +3,16 @@
 **Table of Contents**
 
 - [What is a form?](#what-is-a-form)
-- [Form Overview](#form-overview)
-- [Inputs](#inputs)
-- [Labels](#labels)
-- [Submit button](#submit-button)
-- [Original Form Submissions](#original-form-submissions)
-- [The Modern Way](#the-modern-way)
-- [Accessing form inputs by name](#accessing-form-inputs-by-name)
-- [FormData API](#formdata-api)
-- [One annoying gotcha: checkboxes](#one-annoying-gotcha-checkboxes)
-- [Resetting](#resetting)
+  - [Form Basic Structure](#form-basic-structure)
+  - [Inputs](#inputs)
+  - [Labels](#labels)
+  - [Submit button](#submit-button)
+- [Handling Form Submissions](#handling-form-submissions)
+  - [Original Form Submissions](#original-form-submissions)
+  - [The Modern Way](#the-modern-way)
+  - [FormData API](#formdata-api)
+    - [One annoying gotcha: checkboxes](#one-annoying-gotcha-checkboxes)
+  - [Resetting](#resetting)
 - [Input types](#input-types)
 - [Tracking Input and Non Submission Events](#tracking-input-and-non-submission-events)
 
@@ -32,7 +32,7 @@ But first, when should we use a form? For all user input?
 3. A link that takes the user to a new location - use an `anchor` or a `button`, not a `form`
 4. Registering a new user with a name, password, and user details - use a `form`!
 
-## Form Overview
+### Form Basic Structure
 
 Forms are made up of a few parts:
 - `<form>`: the container for the form
@@ -47,11 +47,16 @@ Below is a full example! For now, just focus on the Elements that are in the exa
   <h2 id="mood-form-header">What is your mood?</h2>
   <p> Tell us how you are feeling </p>
 
-  <label for="current-mood">Current mood</label>
-  <input type="text" id="current-mood" name="currentMood" placeholder="How are you feeling?">
+  <!-- We often use divs to group together labels and inputs -->
+  <div>
+    <label for="current-mood">Current mood</label>
+    <input type="text" id="current-mood" name="currentMood" placeholder="How are you feeling?">
+  </div>
 
-  <label for="is-hungry">Are you hungry?</label>
-  <input type="checkbox" id="is-hungry" name="isHungry">
+  <div>
+    <label for="is-hungry">Are you hungry?</label>
+    <input type="checkbox" id="is-hungry" name="isHungry">
+  </div>
 
   <button class="submit">Submit</button>
 </form>
@@ -64,7 +69,7 @@ There are a lot of attributes to learn, particularly for `label` and `input`. We
 * `input` Elements MUST have an `id` attribute
 * `label` Elements MUST have a `for` attribute equal to the `input` Element's `id`. This connects them.
 
-## Inputs
+### Inputs
 Inputs are where users can input their data. Each `input` Element has a type — the basic inputs are `"text"` or `"number"` but there are many more cool ones.
 
 Here is an example (note we're missing `label`s!)
@@ -83,7 +88,7 @@ Some other types of inputs Elements (other than the literal `input` tag) are the
 
 **Inputs must have a `name` attribute.** We'll use those later when we are getting data from the form when it is submitted.
 
-## Labels
+### Labels
 Labels are *crucial* for accessibility. 
 * They provide text describing the input for screen readers
 * Labels make it so that clicking a label will focus the input or check the checkbox.
@@ -95,22 +100,30 @@ Connect the label to the input with the `for` attribute. It should be the same a
 
 ```html
 <form aria-label="sign-up">
-  <label for="username-input">Username:</label>
-  <input type="text" id="username-input" name="username">
-  
-  <label for="age-input">Age:</label>
-  <input type="number" id="age-input" name="age">
-  
-  <label for="is-hungry-input">Are you Hungry?</label>
-  <input type="checkbox" id="is-hungry-input" name="isHungry">
-  
-  <label for="favorite-color-input">Favorite Color:</label>
-  <input type="color" id="favorite-color-input" name="favoriteColor">
+  <div>
+    <label for="username-input">Username:</label>
+    <input type="text" id="username-input" name="username">
+  </div>
+  <div>
+    <label for="age-input">Age:</label>
+    <input type="number" id="age-input" name="age">
+  </div>
+  <div>
+    <label for="is-hungry-input">Are you Hungry?</label>
+    <input type="checkbox" id="is-hungry-input" name="isHungry">
+  </div>
+  <div>
+    <label for="favorite-color-input">Favorite Color:</label>
+    <input type="color" id="favorite-color-input" name="favoriteColor">
+  </div>
 </form>
 ```
+
+Notice that we also wrap each `label` + `input` pair inside of a `div`. This isn't necessary but it makes styling each pair of elements a lot easier.
+
 > 💡 **Best Practice:** Use `kabob-case` for `id`/`for` and `camelCase` for `name`
 
-## Submit button
+### Submit button
 
 All forms should end with a submit button.
 
@@ -133,7 +146,9 @@ Our objective is to...
 2. create an event handler that extracts the user input data
 3. do something with that data! (save it in a database, show it in the UI, etc...)
 
-## Original Form Submissions
+## Handling Form Submissions
+
+### Original Form Submissions
 
 But first...
 
@@ -158,86 +173,104 @@ Old forms used a few attributes to achieve this behavior:
 </form>
 ```
 
-This is the “default” behavior of the forms, which is NOT what we want. Instead of having the browser take us away from the page, let's stay on the same page and handle the `'submit'` event ourselves!
+This is the “default” behavior of the forms, which is NOT what we want. 
 
-## The Modern Way
 
-Again, our objective is to...
-1. listen for this `'submit'` event
-2. create an event handler that extracts the user input data
-3. do something with that data! (save it in a database, show it in the UI, etc...)
+### The Modern Way
 
-Let's do it! 
+Instead of having the browser take us away from the page, most modern web applications are "single-page-applications" meaning they operate on a single HTML page that dynamically handles all DOM interactions through JavaScript. 
+
+To handle a form submission while staying on the same page, we will need to:
+1. prevent the default behavior
+2. collect the form data
+3. utilize the form data in some way (maybe render it to the screen, or send it to an API)
+4. reset the form
+
+If these are our inputs:
+
+```html
+<input type="text" name="username">
+<input type="number" name="age">
+<input type="checkbox" name="isHungry">
+<input type="color" name="favoriteColor">
+```
+
+Then, we can handle this form on the same page like so:
 
 ```js
-const handleSubmit = (e) => {
+const handleSubmit = (event) => {
   // stop the reload/redirect
-  e.preventDefault(); 
+  event.preventDefault(); 
 
-  // the FormData API makes it SUPER easy to get an object with all form data with 2 steps:
-  const form = e.target;
-  const formData = new FormData(form);
-  const formObj = Object.fromEntries(formData);
+  // the form will be the target of the "submit" event
+  const form = event.target;
 
-  console.log('here is your data:', formObj);
-  // do something with formObj data...
+  // We can access them one at a time like this:
+  const username = form.username.value;
+  const age = form.age.value;
+  const checkbox = form.isHungry.isChecked // <-- checkboxes are different!
+  const color = form.favoriteColor.value;
+
+  // what should we do with those values?? here we are printing a sentence to the console
+  // where only developers will see it. Can we put it on the screen somehow?
+  console.log(`hello, I am user ${username}, I am ${age} years old and my favorite color is ${color}. ${isHungry ? "I am hungry" : "I am full"}.`);
 
   form.reset();
 }
 
-const form = document.querySelector('form');
-form.addEventListener('submit', handleSubmit);
+document.querySelector('form').addEventListener('submit', handleSubmit);
 ```
 
-- `e.preventDefault()` stops the form submission from redirecting/reloading the page
-- The `FormData` API is the best way to get data out of a form. The syntax is the same every time so copy it for now (but look into it on your own!)
+- `event.preventDefault()` stops the form submission from redirecting/reloading the page
+- The `event.target` value will point to the `form` element
+- Using the `form` element, we can access each `input` using the `name` attribute
+- We can access the value of most `input` elements using the `.value` property but checkboxes use the `.checked` property.
 - `form.reset()` empties out the form!
 
-## Accessing form inputs by name
-The quickest way is to just grab the input elements straight from the `form` Element:
+### FormData API
+
+Another, potentially faster, way to get the values of a form is to use the `FormData` API. It starts off the same, we have to grab the `form` using `event.target`:
 
 ```js
-const form = e.target;
-const { currentMood, color } = form;
-console.log('color:', color.value, currentMood.value);
+const form = event.target;
+const formValues = Object.fromEntries(new FormData(form));
+console.log(formValues);
+/* 
+{
+  currentMood: 'happy', 
+  color: 'blue', 
+  isHungry: 'on', 
+  favoriteFruit: 'apple'
+}
+^ Notice something weird about isHungry?
+*/
 ```
 
-We're accessing these values using the `name` attribute of each `input`.
+Let's break this down:
+* We again store the `form` using `event.target`
+* We invoke the function `new FormData()` with that `form` as an argument
+* We immediately take the returned value and pass it to `Object.fromEntries()` which generates an Object with our form values!
 
-That's neat and will elegantly handle different types
-
-## FormData API
-This is neat too! It's got a *lot* going on, but all we need is this little trick:
-
-```js
-const form = e.target;
-const formData = new FormData(form);
-const formObj = Object.fromEntries(formData);
-```
-
-That essentially turns all our inputs into an object. Neat for fetching later.
-
-## One annoying gotcha: checkboxes
-When using checkboxes, you would think they'd use a `true`/`false` setup, but nope! They use `"on"` and `""` (empty string) OR the input just doesn't even exist on the `formObj`. 
+#### One annoying gotcha: checkboxes
+When using checkboxes, you would think they'd use a `true`/`false` setup, but nope! They use `"on"` and `undefined`.
 
 So you'll need to do a little extra work to get them to be `true`/`false`:
 
 ```js
 const form = e.target;
-const formData = new FormData(form);
-const formObj = Object.fromEntries(formData);
-formObj.isHungry = form.isHungry.checked;
+const formValues = Object.fromEntries(new FormData(form));
+formValues.isHungry = Boolean(formValues.isHungry)
 ```
 
-## Resetting
+By converting the `formValues.isHungry` property into a Boolean, it will be `true` if the value is `"on"` or `false` if the value is `undefined`.
+
+### Resetting
 After you submit, sometimes you want to clear the form, so you can do that with `form.reset()` in the js, *or* on the form html itself, add a button with a type of reset
 
 ```html
 <button type="reset">Reset</button>
 ```
 
-Time: 10min<br/>
-Total: 30min
 
 ## Input types
 On the `index.html` go over the basic text inputs, but then also radio groups (with fieldsets and legends), and the select. Point out when to use them:
