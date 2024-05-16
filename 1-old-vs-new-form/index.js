@@ -13,12 +13,13 @@ const handleSubmitIndividually = (event) => {
   const fruit = form.favoriteFruit.value;
 
   const resultsP = document.querySelector("#results");
-  resultsP.textContent = `I am feeling ${mood} which is the color ${color}. ${isHungry ? `I want to eat ${fruit}s` : `If I were hungry, I would eat ${fruit}s`}.`
-
+  resultsP.textContent = `I am feeling ${mood}. ${isHungry ? `I want to eat ${fruit}s` : `If I were hungry, I would eat ${fruit}s`}.`
+  resultsP.style.background = color;
+  resultsP.style.color = (color === 'yellow') ? 'black' : 'white';
   // reset the form
   form.reset();
 }
-// document.querySelector('#new-way').addEventListener('submit', handleSubmitIndividually);
+document.querySelector('#new-way').addEventListener('submit', handleSubmitIndividually);
 
 
 
@@ -38,12 +39,14 @@ const handleSubmitWithFormData = (event) => {
   formValues.isHungry = Boolean(formValues.isHungry);
 
   const resultsP = document.querySelector("#results");
-  resultsP.textContent = `I am feeling ${formValues.currentMood} which is the color ${formValues.color}. ${formValues.isHungry ? "I want to eat" : "If I were hungry, I would eat"} ${formValues.favoriteFruit}s.`
+  resultsP.textContent = `I am feeling ${formValues.currentMood}. ${formValues.isHungry ? "I want to eat" : "If I were hungry, I would eat"} ${formValues.favoriteFruit}s.`
+  resultsP.style.background = formValues.color;
 
   form.reset();
 }
 
-document.querySelector('#new-way').addEventListener('submit', handleSubmitWithFormData);
+// Uncomment this to see how the handler above works!
+// document.querySelector('#new-way').addEventListener('submit', handleSubmitWithFormData);
 
 
 

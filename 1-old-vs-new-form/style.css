@@ -14,7 +14,9 @@ body {
   background-color: var(--dark-gray);
 }
 
-body, h1, h2 {
+body,
+h1,
+h2 {
   margin: 0;
 }
 
@@ -36,6 +38,10 @@ nav a {
 
 main {
   padding: 1rem;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 2rem;
 }
 
 code {
@@ -83,12 +89,12 @@ form {
   font-size: 1.1rem;
   font-weight: bold;
   width: 22rem;
-  position:relative;
+  position: relative;
   margin: 1rem auto;
 }
 
 form:after {
-  content:'';
+  content: '';
   position: absolute;
   background-color: var(--green);
   border: 0.2rem solid var(--black);
@@ -96,11 +102,11 @@ form:after {
   left: 0.1rem;
   right: -0.7rem;
   bottom: -0.7rem;
-  z-index:-1;
+  z-index: -1;
 }
 
 form:before {
-  content:'';
+  content: '';
   position: absolute;
   background-color: var(--gray);
   border: 0.2rem solid var(--black);
@@ -108,7 +114,7 @@ form:before {
   right: -1.05rem;
   left: 0.5rem;
   bottom: -1.1rem;
-  z-index:-1;
+  z-index: -1;
 }
 
 .input-container {
@@ -133,11 +139,14 @@ fieldset {
   font-weight: bold;
 }
 
-input[type="checkbox"], input[type="radio"] {
+input[type="checkbox"],
+input[type="radio"] {
   accent-color: var(--green);
 }
 
-input[type="text"], input[type="password"], select {
+input[type="text"],
+input[type="password"],
+select {
   border: 0.2rem solid var(--black);
   border-radius: 0.8rem;
   background-color: var(--white);
@@ -159,4 +168,15 @@ form#old-way:after {
 
 .bold {
   font-weight: bold;
+}
+
+#results-container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+p#results {
+  padding: 1rem;
+  border-radius: 10px;
 }

@@ -5,7 +5,7 @@
 - [What is a form?](#what-is-a-form)
   - [Form Basic Structure](#form-basic-structure)
   - [Inputs](#inputs)
-  - [Labels](#labels)
+  - [Accesibility: Labels and aria-label](#accesibility-labels-and-aria-label)
   - [Submit button](#submit-button)
 - [Handling Form Submissions](#handling-form-submissions)
   - [Original Form Submissions](#original-form-submissions)
@@ -19,13 +19,13 @@
 **Q: What is a form and why is a form useful?**
 
 ## What is a form?
-A form is a collection of labels and inputs that we can "submit" all at once in order to collect the data all at once. 
+A form is a collection of inputs that can be filled out by a user to submit a collection of data. 
+
+![a form with inputs. a user fills out the inputs and the values are combined to display a sentence](./img/form-demo.gif)
 
 **Q: What kinds of data might we collect in a form?**
 
-This is nice and convenient for us, but also html forms give us a *lot* of accessibility and features for free. Today we'll learn how to deal with forms. 
-
-But first, when should we use a form? For all user input?
+**Q:When should we use a form? For all user input?**
 
 1. Click a button to pop open a tab with more data - use a `button`, not a `form`
 2. A text input that filters the list of data shown - use an `input`, but not a full `form`
@@ -36,9 +36,9 @@ But first, when should we use a form? For all user input?
 
 Forms are made up of a few parts:
 - `<form>`: the container for the form
-  - `h2 (or other)`: A heading to describe your form
+  - `h2 (or other header)`: A heading to describe your form
   - `<label>`: A label for each input
-  - `<input>`: The inputs with the data. There are many types (text, radio, checkbox, etc...)
+  - `<input>`: A place for the user to enter some data. There are many types (text, radio, checkbox, etc...)
   - `<button>`: A button to submit the form
 
 Below is a full example! For now, just focus on the Elements that are in the example (`form`, `h2`, `label`, `input`, `button`)
@@ -75,31 +75,43 @@ Inputs are where users can input their data. Each `input` Element has a type —
 Here is an example (note we're missing `label`s!)
 
 ```html
-<form aria-label="sign-up">
-  <h2>Sign Up</h2>
-  <input type="text" name="username">
-  <input type="number" name="age">
-  <input type="checkbox" name="isHungry">
-  <input type="color" name="favoriteColor">
+<form>
+  <input type="text" id="username-input" name="username">
+  <input type="number" id="age-input" name="age">
+  <input type="checkbox" id="is-hungry-input" name="isHungry">
+  <input type="color" id="favorite-color-input" name="favoriteColor">
 </form>
 ```
+
+> 💡 **Best Practice:** Use `kabob-case` for `id` and `camelCase` for `name` (we'll learn why in a moment)
 
 Some other types of inputs Elements (other than the literal `input` tag) are the `select` and `textarea` (and technically `buttons`). 
 
 **Inputs must have a `name` attribute.** We'll use those later when we are getting data from the form when it is submitted.
 
-### Labels
-Labels are *crucial* for accessibility. 
-* They provide text describing the input for screen readers
-* Labels make it so that clicking a label will focus the input or check the checkbox.
-* Labels help our seeing users too!
+### Accesibility: Labels and aria-label
 
-**You must have a label for every input.** 
-
-Connect the label to the input with the `for` attribute. It should be the same as the input's `id`: 
+Right now, our form is just a bunch of inputs. But how does the user know which input is for which value? Well, for one, we could add a header:
 
 ```html
-<form aria-label="sign-up">
+<form>
+  <h2>Sign Up Form </h2>
+  <input type="text" id="username-input" name="username">
+  <input type="number" id="age-input" name="age">
+  <input type="checkbox" id="is-hungry-input" name="isHungry">
+  <input type="color" id="favorite-color-input" name="favoriteColor">
+</form>
+```
+
+But that only helps our seeing users! When designing websites, we must design for ALL of our users. 
+
+Labels are *crucial* for our non-seeing users and accessibility. They tell screen readers what the purpose of an element is. There are two kinds of labels that we'll use:
+1. The `aria-label`/`aria-labelledby` attribute — describes the purpose of a `form` (or really of any element).
+2. The `<label>` element — describes the purpose of an `<input>` element. 
+
+```html
+<form aria-labelled="sign-up-header">
+  <h2 id="sign-up-header">Sign Up Form </h2>
   <div>
     <label for="username-input">Username:</label>
     <input type="text" id="username-input" name="username">
@@ -119,9 +131,17 @@ Connect the label to the input with the `for` attribute. It should be the same a
 </form>
 ```
 
-Notice that we also wrap each `label` + `input` pair inside of a `div`. This isn't necessary but it makes styling each pair of elements a lot easier.
+A few notes about `aria-lablledby`
+* **A**ccessible **R**ich **I**nternet **A**pplications (ARIA) is a set of roles and attributes that define ways to make web content and web applications more accessible to people with disabilities.
+* We added an `id` to the `h2` element
+* We added the `aria-lablledby` attribute to the `form` element so that screen readers know to use the `h2` element text as the aria label.
 
-> 💡 **Best Practice:** Use `kabob-case` for `id`/`for` and `camelCase` for `name`
+Here are a few notes about the `<label>` element:
+* Connect the `<label>` to the `<input>` with the `for` attribute. It should be the same as the input's `id`: 
+* Labels make it so that clicking a label will focus the input or check the checkbox.
+* Labels help our seeing users too by describing the input!
+
+Notice that we also wrap each `label` + `input` pair inside of a `div`. This isn't necessary but it makes styling each pair of elements a lot easier.
 
 ### Submit button
 
@@ -321,7 +341,7 @@ const capitalizeMood = (e) => {
   const form = document.querySelector('form');
   
   // we can also use query selector to get this input, but if we used checkboxes or radio elements, using the form is easier
-  form.elements.currentMood.value = form.elements.currentMood.value.toUpperCase();
+  form.currentMood.value = form.currentMood.value.toUpperCase();
 };
 
 const normalButton = document.querySelector('#normal-button');
