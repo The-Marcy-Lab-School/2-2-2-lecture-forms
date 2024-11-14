@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Practice</title>
+  </head>
+  <body>
+    <h1>Form Practice</h1>
+    <!-- Add your form here -->
+     <form action="">
+      <h2>Sign Up for Pickleball!</h2>
+      
+      <fieldset>
+        <legend>email and password</legend>
+
+        <label for="email-input">Email:</label>
+        <input type="email" name="email" id="email-input">
+        
+        <label for="password-input">Password:</label>
+        <input type="password" name="password" id="password-input">
+
+        <label for="injection-input">Injection:</label>
+        <input type="text" name="injection" id="injection-input">
+      </fieldset>
+
+      <label for="day-select">Choose your preferred day to play</label>
+      <select name="dayAvailable" id="day-select">
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+      </select>
+
+
+      <label for="paddle-input">Do you have your own paddle:</label>
+      <input type="checkbox" name="hasPaddle" id="paddle-input">
+
+      <button type="submit">Submit</button>
+
+      <p id="error-message"></p>
+     </form>
+
+     <div id="result">
+      <script>console.log("hello world")</script>
+     </div>
+
+     <script src="./index.js"></script>
+  </body>
+</html>
