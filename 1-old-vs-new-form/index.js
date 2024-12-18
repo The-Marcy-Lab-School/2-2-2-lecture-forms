@@ -7,10 +7,10 @@ const handleSubmitIndividually = (event) => {
   const form = event.target;
 
   // For super simple forms, you can grab each value using the input "name"s in the form:
-  const mood = form.currentMood.value;
-  const color = form.color.value;
-  const isHungry = form.isHungry.checked;
-  const fruit = form.favoriteFruit.value;
+  const mood = form.elements.currentMood.value;
+  const color = form.elements.color.value;
+  const isHungry = form.elements.isHungry.checked;
+  const fruit = form.elements.favoriteFruit.value;
 
   const resultsP = document.querySelector("#results");
   resultsP.textContent = `I am feeling ${mood}. ${isHungry ? `I want to eat ${fruit}s` : `If I were hungry, I would eat ${fruit}s`}.`
@@ -76,9 +76,11 @@ fieldset.addEventListener('input', handleInput);
 const capitalizeMood = (e) => {
   console.log('e.target:', e.target);
   const form = document.querySelector('#new-way');
-  // can also use query selector, but if we used checkboxes 
-  // or radio elements, using the form is easier
-  form.currentMood.value = form.currentMood.value.toUpperCase();
+  
+  const { currentMoodInput } = form.elements;
+  // can also use query selector to currentMoodInput, but getting it through the form is easier
+  
+  currentMoodInput.value = currentMoodInput.value.toUpperCase();
 };
 
 const normalButton = document.querySelector('#normal-button');
