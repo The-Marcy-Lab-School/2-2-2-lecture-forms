@@ -6,13 +6,13 @@ const handleSubmit = (event) => {
   const form = event.target;
 
   // // we can grab form values using the form itself and the input names
-  console.log(form.email.value)
-  console.log(form.password.value);
-  console.log(form.hasPaddle.checked);
-  console.log(form.dayAvailable.value);
+  console.log(form.elements.email.value)
+  console.log(form.elements.password.value);
+  console.log(form.elements.hasPaddle.checked);
+  console.log(form.elements.dayAvailable.value);
 
   // we can choose to do stuff with that data as we please
-  if (form.password.value.length < 10) {
+  if (form.elements.password.value.length < 10) {
     document.querySelector("#error-message").textContent = 'Your password must have 10 characters or more!';
 
     setTimeout(() => {
@@ -20,11 +20,11 @@ const handleSubmit = (event) => {
     }, 2000);
   } else {
     document.querySelector('#result').innerHTML = `
-      <p>Email created: ${form.email.value}</p>
-      <p>With password: ${form.password.value}</p>
-      <p>Has a paddle?: ${form.hasPaddle.checked}</p>
-      <p>Preferred Day: ${form.dayAvailable.value}</p>
-      <p>${form.injection.value}</p>
+      <p>Email created: ${form.elements.email.value}</p>
+      <p>With password: ${form.elements.password.value}</p>
+      <p>Has a paddle?: ${form.elements.hasPaddle.checked}</p>
+      <p>Preferred Day: ${form.elements.dayAvailable.value}</p>
+      <p>${form.elements.injection.value}</p>
     `
   }
 
